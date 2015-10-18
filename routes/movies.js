@@ -61,8 +61,6 @@ router.put('/:id', function(req, res, next) {
 			throw err;
 		}
 
-		console.log(result);
-
 		res.status(200).send({message: 'Movie updated with success!'});
 	});
 });
