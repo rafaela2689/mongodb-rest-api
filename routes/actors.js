@@ -9,8 +9,7 @@ router.get('/', function(req, res, next) {
 
 	db.collection('actors').find({}, {limit : 100}).toArray(function(err, actors) {
 		if (err) {
-			console.log(err);
-			throw err;
+			next(err);
 		}
 		res.status(200).send(actors);
 	});

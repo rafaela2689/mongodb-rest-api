@@ -9,8 +9,7 @@ router.get('/', function(req, res, next) {
 
 	db.collection('directors').find({}, {films: 0}).limit(100).toArray(function(err, directors) {
 		if (err) {
-			console.log(err);
-			throw err;
+			next(err);
 		}
 		res.status(200).send(directors);
 	});
@@ -21,8 +20,7 @@ router.get('/movies', function(req, res, next) {
 
 	db.collection('directors').find({}, {limit : 100}).toArray(function(err, directors) {
 		if (err) {
-			console.log(err);
-			throw err;
+			next(err);
 		}
 		res.status(200).send(directors);
 	});

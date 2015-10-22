@@ -10,8 +10,7 @@ router.get('/', function(req, res, next) {
 
 	db.collection('movies').find({}, {limit : 100}).toArray(function(err, movies) {
 		if (err) {
-			console.log(err);
-			throw err;
+			return next(err);
 		}
 		res.status(200).send(movies);
 	});
@@ -22,8 +21,7 @@ router.get('/directors', function(req, res, next) {
 
 	db.collection('movies').find({}, { roles:0 }).limit(100).toArray(function(err, movies) {
 		if (err) {
-			console.log(err);
-			throw err;
+			return next(err);
 		}
 		res.status(200).send(movies);
 	});
@@ -34,8 +32,7 @@ router.get('/roles', function(req, res, next) {
 
 	db.collection('movies').find({}, { directors:0 }).limit(100).toArray(function(err, movies) {
 		if (err) {
-			console.log(err);
-			throw err;
+			return next(err);
 		}
 		res.status(200).send(movies);
 	});
@@ -44,8 +41,7 @@ router.get('/roles', function(req, res, next) {
 router.post('/', function(req, res, next) {
 	db.collection('movies').insert(req.body, {}, function(err, result) {
 		if (err) {
-			console.log(err);
-			throw err;
+			return next(err);
 		}
 
 		res.status(201).send({message: 'Movie added with success!'});
@@ -55,12 +51,10 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next) {
 	var id = req.params.id;
 	var data = { year : req.body.year };
-	db.collection('movies').update({_id: 5}, {$set: data}, function(err, result) {
+	db.collection('movies').update({_id: id}, {$set: data}, function(err, result) {
 		if (err) {
-			console.log(err);
-			throw err;
+			return next(err);
 		}
-
 		res.status(200).send({message: 'Movie updated with success!'});
 	});
 });
@@ -68,10 +62,8 @@ router.put('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
 	db.collection('movies').remove({_id: 5}, function(err, result) {
 		if (err) {
-			console.log(err);
-			throw err;
+			return next(err);
 		}
-
 		res.status(200).send({message: 'Movie deleted with success!'});
 	});
 });
