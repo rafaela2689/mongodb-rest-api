@@ -7,7 +7,7 @@ var db = mongoskin.db('mongodb://@localhost:27017/imdb', {safe:true});
 /* GET all directors */
 router.get('/', function(req, res, next) {
 
-	db.collection('directors').find({}, {films: 0}).limit(100).toArray(function(err, directors) {
+	db.collection('directors').find({}, {films: 0}).toArray(function(err, directors) {
 		if (err) {
 			next(err);
 		}
