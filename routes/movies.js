@@ -39,18 +39,32 @@ router.get('/roles', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-	db.collection('movies').insert(req.body, {}, function(err, result) {
+
+	var input = JSON.parse(JSON.stringify(req.body));
+    var data = {
+    	"_id": parseInt(input.id),
+        "name" : input.name,
+        "year" : parseInt(input.year),
+        "rank" : parseInt(input.rank)
+    };
+    console.log(data);
+	db.collection('movies').insert(data, {w: 1}, function(err, result) {
 		if (err) {
 			return next(err);
 		}
 
-		res.status(201).send({message: 'Movie added with success!'});
+		res.status(201).send({message: 'Movie added with success!' });
 	});
 });
 
 router.put('/:id', function(req, res, next) {
-	var id = req.params.id;
-	var data = { year : req.body.year };
+	var input = JSON.parse(JSON.stringify(req.body));
+	var id = parseInt(req.params.id);
+	var data = {
+        "name" : input.name,
+        "year" : parseInt(input.year),
+        "rank" : parseInt(input.rank)
+    };
 	db.collection('movies').update({_id: id}, {$set: data}, function(err, result) {
 		if (err) {
 			return next(err);
@@ -60,7 +74,8 @@ router.put('/:id', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-	db.collection('movies').remove({_id: 5}, function(err, result) {
+	var id = parseInt(req.params.id);
+	db.collection('movies').remove({_id: id}, function(err, result) {
 		if (err) {
 			return next(err);
 		}
